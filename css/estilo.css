@@ -1,0 +1,58 @@
+body{
+    background-image: url('C:\Users\Dk Informatica\Downloads\Projeto atual 07-10\imagens'); /* Substitua 'sua-imagem-de-fundo.jpg' pelo caminho da sua imagem */
+    background-size: cover; /* Cobrir toda a área do corpo */
+    background-repeat: no-repeat; /* Não repetir a imagem */
+    background-attachment: fixed; /* Fixar a imagem no lugar para que role com a página */
+}
+
+
+
+.chat-bar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #0074E4;
+    padding: px;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+}
+
+.message-input {
+    width: 80%;
+    padding: 8px;
+    border: none;
+    border-radius: 20px;
+}
+
+.microphone-button {
+    background-color: #25D366;
+    color: #fff;
+    border: none;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    cursor: pointer;
+    transition: background-color 0.3s; /* Adicionando transição de cor */
+}
+
+.microphone-button.active {
+    background-color: #FF0000;
+     /* Cor do botão quando o microfone está ativo */
+}
+
+/* Estilos CSS para a área de exibição de mensagens */
+.message-display {
+    margin-bottom: 60px; /* Espaço para a barra de chat */
+    padding: 10px;
+    color: white;
+}
+
+#img-logo{
+    width: 60px;
+}
+
+.test-div{
+    margin: 100 100 100 100;
+}

@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="pt-BR>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Posso Ajudar?</title>
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/style.css">
+    <style>
+        /* Estilo para o botão ativado */
+        .microphone-button.active {
+            background-color: red;
+        }
+    </style>
+</head>
+<body   >
+    <nav class="navbar navbar-expand-lg bg-dark navbar-dark">
+        <div class="container">
+  
+          <!--logo marca-->
+          <a class="navbar-brand" href="index.html"> <img id="img-logo" src="imagens/logo-barra.png" alt=""></a>
+  
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button> <!--botao sanduba-->
+  
+          <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+  
+              <li class="nav-item">
+                <a class="nav-link" aria-current="page" href="index.html">Inicio</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="cursos.html">+Dicas</a>
+              </li>
+  
+              <li class="nav-item">
+                <a class="nav-link active" href="assistentevoz.html">Assistente de Voz</a>
+              </li>
+  
+             <!--<li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
+                aria-expanded="false">
+                Mais
+              </a>
+              <ul class="dropdown-menu">
+                <li><a class="dropdown-item" href="#">FAQ (Perguntas frequentes)</a></li>
+                <li><a class="dropdown-item" href="#">Contatos</a></li>
+                <li>
+                  <hr class="dropdown-divider">
+                </li>
+                <li><a class="dropdown-item" href="sobrenos.html">Sobre nós</a></li>
+              </ul>
+            </li>-->
+  
+            </ul>
+            <a id="link-entrar" href="login.html">Entrar</a>
+  
+            <!--<form class="d-flex" role="search">
+                    <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+                    <button class="btn btn-outline-success" type="submit">Search</button>
+                  </form>-->
+          </div>
+        </div>
+      </nav>
+    <!-- Conteúdo principal da página -->
+        <div class="message-display">
+            <!-- Aqui a última frase falada ou digitada será exibida -->
+        </div>
+
+        <!-- Barra de chat -->
+        <div class="chat-bar">
+            <input type="text" class="message-input" placeholder="Digite sua mensagem..." onkeyup="sendMessage(event)">
+            <button class="microphone-button" id="microphone-button">
+                🎙️ Microfone
+            </button>
+        </div>
+
+        <!-- JavaScript para exibir a frase enquanto está sendo falada ou enviar mensagens digitadas -->
+        <script>
+            let recognition;
+            let isMicrophoneActive = false;
+
+            // Obtenha uma referência para o botão do microfone
+            const microphoneButton = document.getElementById('microphone-button');
+
+            microphoneButton.addEventListener('click', toggleMicrophone);
+
+            function toggleMicrophone() {
+                if (!isMicrophoneActive) {
+                    startSpeechRecognition();
+                    isMicrophoneActive = true;
+                    microphoneButton.classList.add('active');
+                } else {
+                    stopSpeechRecognition();
+                    isMicrophoneActive = false;
+                    microphoneButton.classList.remove('active');
+                }
+            }
+
+            function startSpeechRecognition() {
+                if ('SpeechRecognition' in window || 'webkitSpeechRecognition' in window) {
+                    recognition = new (window.SpeechRecognition || window.webkitSpeechRecognition)();
+                    recognition.continuous = true;
+                    recognition.interimResults = false;
+
+                    // Defina o idioma para o português do Brasil
+                    recognition.lang = 'pt-BR';
+
+                    recognition.onresult = function(event) {
+                        const result = event.results[event.resultIndex];
+                        const transcript = result[0].transcript;
+                        addMessage(transcript);
+                    };
+
+                    recognition.onend = function() {
+                        // Não é mais necessário alternar o botão aqui
+                    };
+
+                    microphoneButton.classList.add('active');
+
+                    recognition.start();
+                } else {
+                    alert('Seu navegador não suporta reconhecimento de fala.');
+                }
+            }
+
+            function stopSpeechRecognition() {
+                if (recognition) {
+                    recognition.stop();
+                }
+            }
+
+            // Função para adicionar a frase enquanto está sendo falada ou a mensagem digitada à área de exibição de mensagens
+            function addMessage(message) {
+                const messageDisplay = document.querySelector('.message-display');
+                const messageInput = document.querySelector('.message-input');
+
+                if (message.trim() !== '') {
+                    const messageElement = document.createElement('div');
+                    messageElement.textContent = message;
+                    messageDisplay.appendChild(messageElement);
+                    messageInput.value = ''; // Limpar o campo de entrada
+                }
+            }
+
+            // Função para enviar mensagem quando a tecla "Enter" é pressionada
+            function sendMessage(event) {
+                if (event.key === 'Enter') {
+                    const messageInput = document.querySelector('.message-input');
+                    const messageText = messageInput.value;
+                    addMessage(messageText);
+                }
+            }
+        </script>
+
+    <script src="js/bootstrap.bundle.min.js"></script>
+
+</body>
+</html>

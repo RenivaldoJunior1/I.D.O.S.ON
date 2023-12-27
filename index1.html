@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Voice Command Receiver</title>
+</head>
+
+<body>
+    <h1>Voice Command Receiver</h1>
+    <p>Press the button to start voice recognition:</p>
+    <button id="startRecognition">Start Voice Recognition</button>
+    <div id="output"></div>
+
+    <script>
+        document.getElementById("startRecognition").addEventListener("click", function () {
+            if ('mediaDevices' in navigator && 'getUserMedia' in navigator.mediaDevices) {
+                navigator.mediaDevices.getUserMedia({ audio: true })
+                    .then(function (stream) {
+                        var audioContext = new AudioContext();
+                        var audioStream = audioContext.createMediaStreamSource(stream);
+                        var recognition = new SpeechRecognition() || webkitSpeechRecognition();
+                        recognition.lang = "pt-BR";
+                        recognition.continuous = true;
+                        recognition.interimResults = false;
+
+                        recognition.onresult = function (event) {
+                            var result = event.results[event.results.length - 1][0].transcript;
+                            document.getElementById("output").innerHTML = "Você disse: " + result;
+
+                            // Send the result to the server
+                            fetch("http://192.168.0.6:8080/" + encodeURIComponent(result))
+                                .then(response => {
+                                    // Lida com a resposta, se necessário
+                                })
+                                .catch(error => {
+                                    console.error("Erro ao enviar o comando para o servidor:", error);
+                                });
+                        };
+
+                        recognition.start();
+                    })
+                    .catch(function (error) {
+                        console.error("Erro ao acessar o microfone:", error);
+                    });
+            } else {
+                console.error("Reconhecimento de voz não suportado neste navegador.");
+            }
+        });
+    </script>
+</body>
+
+</html>
